@@ -1,0 +1,8 @@
+{
+  "name": "Remix Todo List",
+  "description": "A clean and functional Todo application with filtering, priorities, categories, and local persistence.",
+  "requestFramePermissions": [],
+  "majorCapabilities": [
+    "MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"
+  ]
+}

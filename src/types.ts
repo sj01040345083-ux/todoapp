@@ -22,3 +22,27 @@ export interface Todo {
 export type FilterStatus = 'all' | 'active' | 'completed';
 
 export type SortBy = 'createdAt' | 'dueDate' | 'priority' | 'title';
+
+// ---- 지점 소통게시판 ----
+export type BoardCategory = 'notice' | 'request' | 'question' | 'share' | 'suggestion';
+
+export interface Branch {
+  id: string;
+  name: string;
+  region: string;
+}
+
+export interface BoardPost {
+  id: string;
+  title: string;
+  category: BoardCategory;
+  branchId: string; // 'hq' = 본사
+  author: string;
+  createdAt: string; // ISO
+  views: number;
+  comments: number;
+  urgent: boolean;
+  pinned?: boolean;
+  answered?: boolean; // 질문·업무요청만 해당
+  readBy?: string[]; // 공지: 확인한 지점 id
+}

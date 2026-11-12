@@ -4,12 +4,17 @@ import { TaskInput } from './components/TaskInput';
 import { FilterBar } from './components/FilterBar';
 import { TaskList } from './components/TaskList';
 import { TaskStatsCard } from './components/TaskStatsCard';
+import { BoardDashboard } from './components/dashboard/BoardDashboard';
+import { LayoutDashboard, ListTodo } from 'lucide-react';
 import { DEFAULT_CATEGORIES, INITIAL_TODOS } from './data/initialData';
 import { Category, FilterStatus, Priority, SortBy, Todo } from './types';
 
 const STORAGE_KEY = 'todo_app_tasks_v1';
 
+type View = 'dashboard' | 'todo';
+
 export default function App() {
+  const [view, setView] = useState<View>('dashboard');
   // Load initial state from localStorage or initial sample data
   const [todos, setTodos] = useState<Todo[]>(() => {
     try {
@@ -148,8 +153,40 @@ export default function App() {
 
   const hasActiveFilters = Boolean(searchQuery || statusFilter !== 'all' || selectedCategory);
 
+  const nav = (
+    <nav className="bg-slate-900 text-white">
+      <div className="max-w-6xl mx-auto px-4 sm:px-6 flex items-center gap-1 h-11">
+        {([
+          ['dashboard', '소통게시판 대시보드', LayoutDashboard],
+          ['todo', '할 일', ListTodo],
+        ] as const).map(([id, label, Icon]) => (
+          <button
+            key={id}
+            onClick={() => setView(id)}
+            className={`inline-flex items-center gap-1.5 px-3 py-1.5 text-xs font-semibold rounded-lg cursor-pointer transition-colors ${
+              view === id ? 'bg-white/15 text-white' : 'text-slate-300 hover:text-white'
+            }`}
+          >
+            <Icon className="w-3.5 h-3.5" />
+            {label}
+          </button>
+        ))}
+      </div>
+    </nav>
+  );
+
+  if (view === 'dashboard') {
+    return (
+      <div className="min-h-screen bg-slate-50 text-slate-900">
+        {nav}
+        <BoardDashboard />
+      </div>
+    );
+  }
+
   return (
     <div className="min-h-screen bg-slate-50 text-slate-900 pb-16">
+      {nav}
       {/* Header Bar */}
       <Header
         totalCount={todos.length}
